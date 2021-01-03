@@ -50,7 +50,7 @@ export class FormComponent implements OnInit, Validators {
     this.user.phone = '0619735555';
     this.user.login = 'baptiste67';
     this.user.password = 'baptiste';
-    this.user.adress = '1 rue saint léon';
+    this.user.address = '1 rue saint léon';
     this.user.zipcode = '67700';
     this.user.city = 'saverne';
   }
@@ -85,7 +85,7 @@ export class FormComponent implements OnInit, Validators {
         Validators.pattern('^[0-9]+$'),
         Validators.required,
       ]],
-      adress: [null, Validators.required],
+      address: [null, Validators.required],
       login: [null, Validators.required],
       mail: [null,
         [
@@ -120,10 +120,10 @@ export class FormComponent implements OnInit, Validators {
     this.user.firstname = this.form.value.firstname;
     if (this.form.valid) {
       this.userService.addUser(this.user).subscribe((response) => {
-        this.logged = response;
-        // this.userstore.dispatch(new AddUser(this.logged));
-        // this.formValidate=true;
+        this.userstore.dispatch(new AddUser(response));
+        this.formValidate=true;
       });
+
     }
   }
 }

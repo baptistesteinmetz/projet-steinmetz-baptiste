@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: '../assets/mock/products.json',
-  api: 'http://localhost:8081',
+  api: 'https://tp06steinmetz.herokuapp.com',
   // name: 'products'
 };
 
@@ -17,3 +16,5 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
+

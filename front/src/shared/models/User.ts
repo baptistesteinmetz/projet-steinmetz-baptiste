@@ -1,7 +1,8 @@
 export class User {
+    idUser: number;
     firstname: string;
     lastname: string;
-    adress: string;
+    address: string;
     zipcode: string;
     city: string;
     gender: string;

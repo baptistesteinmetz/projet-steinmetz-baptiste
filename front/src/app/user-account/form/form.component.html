@@ -1,7 +1,7 @@
 <!-- <p>form works!</p>  -->
 <!-- <span> {{ user.firstname }} </span> -->
 <div id="section-main">
-    <div id="section-form"  *ngIf="!formValidate" (formValidate)="formValidate = $event">
+    <div id="section-form" *ngIf="!formValidate" (formValidate)="formValidate = $event">
         <app-header-form></app-header-form>
         <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
             <div class="c-input">
@@ -65,9 +65,9 @@
                 </div>
             </div>
             <div class="c-input-one">
-                <label for="adress">Adress:</label>
-                <input formControlName="adress" [(ngModel)]="user.adress" type="text" id="adress" name="adress">
-                <div *ngIf="isValidInput('adress')">
+                <label for="address">Adress:</label>
+                <input formControlName="address" [(ngModel)]="user.address" type="text" id="adress" name="adress">
+                <div *ngIf="isValidInput('address')">
                     <span class="err-input" *ngIf="f.adress.errors && f.adress.errors.required">Required</span>
                     <span class="err-input" *ngIf="f.adress.errors.pattern">
                 Must be a valid adress format.
@@ -137,7 +137,7 @@
                 <button *ngIf="!waiting" type="submit" class="validate" value="Valider" [disabled]="!form.valid">
               Submit
             </button>
-            <i *ngIf="waiting" class="fa fa-spin fa-spinner" aria-hidden="true"></i>
+                <i *ngIf="waiting" class="fa fa-spin fa-spinner" aria-hidden="true"></i>
             </div>
         </form>
 
