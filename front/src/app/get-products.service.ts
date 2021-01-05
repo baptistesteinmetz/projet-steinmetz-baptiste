@@ -1,3 +1,4 @@
+import { ApiService } from './api.service';
 import { EventEmitter } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -11,8 +12,11 @@ import { catchError, tap, map, filter} from 'rxjs/operators';
   providedIn: 'root'
   }
 )
-export class ProductService {
-  constructor(private http: HttpClient) { }
+export class ProductService extends ApiService {
+
+  constructor(private hClient: HttpClient) {
+    super(hClient);
+   }
 
   private products: Product[];
   private filteredProducts$: Subject<Product[]> = new ReplaySubject<Product[]>(1);
@@ -23,7 +27,7 @@ export class ProductService {
       return of(this.products);
     }
     // fetch and cache products
-    return this.http.get(environment.api + '/product/all').pipe(
+    return this.hClient.get(environment.api + '/product/all').pipe(
       tap((data : any) => {
         this.products = data.data;
         this.filteredProducts$.next(this.products);
@@ -57,8 +61,7 @@ export class ProductService {
   }
 
   public getSingleProduct(id): Observable<any> {
-    console.log(id)
-    return this.http.get(environment.api + '/product/' + id).pipe(
+    return this.hClient.get(environment.api + '/product/' + id).pipe(
       tap((data : Product) => {
         this.products = data[0];
       })
@@ -93,11 +96,9 @@ export class ProductService {
         products = products.sort((a,b) => {
           switch(status) {
             case 0:
-              // console.log('here !')
               return a.name < b.name  ? -1 : 1;
               break;
             case 1:
-              // console.log('here ?')
               return a.name > b.name ? -1 : 1;
               break;
           }
@@ -105,6 +106,19 @@ export class ProductService {
         this.filteredProducts$.next(products);
       }),
       map(() => void 0)
+    );
+  }
+
+
+  buyProducts(products: Product[]) : Observable<any> {
+    const  body = new URLSearchParams();
+    let price = 0;
+    products.forEach(product => {
+      price += product.price;
+    })
+    body.set("price", price.toString());
+    return this.hClient.post(environment.api + '/product/buy',body.toString(), this.httpOptions).pipe(
+      map((data) => data)
     );
   }
 }

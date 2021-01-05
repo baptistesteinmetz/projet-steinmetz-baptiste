@@ -1,11 +1,11 @@
 export class Product {
-  id: number;
+  idProduct: number;
   name: string;
   price: number;
   src: string;
   description: string;
-  backgroundLight: string;
-  backgroundDark: string;
+  primary_color: string;
+  secondary_color: string;
   platform: string;
-  releaseDate: Date;
+  release_date: Date;
 }

@@ -13,3 +13,7 @@ export class ShowUser {
   static readonly type = '[User] Show';
   constructor(public payload: User) {}
 }
+export class DelUser {
+  static readonly type = '[User] Del';
+  constructor(public payload: User) {}
+}

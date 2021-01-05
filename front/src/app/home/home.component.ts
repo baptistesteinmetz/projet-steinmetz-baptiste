@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
         if(JSON.stringify(data) !== JSON.stringify({})) {
           this.logged = true;
         }
+        if(!data) this.logged = false;
       }
     );
   }

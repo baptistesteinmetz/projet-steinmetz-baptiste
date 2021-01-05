@@ -1,5 +1,5 @@
 import { Product } from './../../shared/models/products';
-import { AddProduct, DelProduct, ShowProduct } from './../actions/product-action';
+import { AddProduct, DelProduct, ShowProduct, BuyProduct } from './../actions/product-action';
 import { NgxsModule, Action, Selector, State, StateContext } from '@ngxs/store';
 import { ProductStateModel } from './product-state-model';
 
@@ -59,10 +59,20 @@ export class ProductState {
     const index = state.products.indexOf(payload);
     state.products.splice(index, 1);
       patchState({
-      //   // supprimer le payload dans users
-      //   products: state.products
+
       });
     }
+
+    @Action(BuyProduct)
+    buy(
+      { getState, patchState }: StateContext<ProductStateModel>,
+      { payload }: BuyProduct,
+    ) {
+      const state = getState();
+      patchState({
+        products: []
+      });
+      }
 
     @Action(ShowProduct)
     show(

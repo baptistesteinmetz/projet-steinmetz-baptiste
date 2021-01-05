@@ -17,6 +17,7 @@ import {
 } from './../../customdirectives.directive';
 import { User } from '../../../shared/models/User';
 import { ɵEmptyOutletComponent } from '@angular/router';
+import { cpuUsage } from 'process';
 
 @Component({
   selector: 'app-form',
@@ -33,11 +34,13 @@ export class FormComponent implements OnInit, Validators {
   public user$: Subject<User[]> = new ReplaySubject<User[]>(1);
 
   form: FormGroup;
-  formValidate: boolean = false;
+  public formValidate: boolean = false;
+  public errorSignIn: boolean = false;
+  public waiting: boolean = false;
+
   userTab: User[] = [];
   logged: User = new User();
   currentUser$: Observable<User>;
-  public waiting: boolean = false;
 
   // @Input() userName: string = this.user.firstname;
 
@@ -62,6 +65,7 @@ export class FormComponent implements OnInit, Validators {
       if (JSON.stringify(data) !== JSON.stringify({})) {
         this.formValidate=true;
       }
+      if(!data) this.formValidate = false;
     });
   }
 
@@ -120,8 +124,16 @@ export class FormComponent implements OnInit, Validators {
     this.user.firstname = this.form.value.firstname;
     if (this.form.valid) {
       this.userService.addUser(this.user).subscribe((response) => {
-        this.userstore.dispatch(new AddUser(response));
-        this.formValidate=true;
+        if(response.success)
+        {
+          this.userstore.dispatch(new AddUser(response.data));
+          this.formValidate=true;
+          this.waiting = false;
+        }
+        else {
+          this.waiting = false;
+          this.errorSignIn = true;
+        }
       });
 
     }

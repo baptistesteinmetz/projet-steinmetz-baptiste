@@ -13,7 +13,7 @@
                     <div class="cart-recap-info">
                         <span>Total products : {{nbProducts$ | async}}</span>
                         <span>Total amount : {{priceProducts$ | async}}€ </span>
-                        <button disabled>Go to checkout</button>
+                        <button (click)="buyProducts(listProduct$)">Go to checkout</button>
                     </div>
                 </div>
                 <div class="cart-product-list">
@@ -34,4 +34,12 @@
             </div>
         </div>
     </div>
+</div>
+
+<div *ngIf="buying" class="shopping-cart-buying">
+    <div *ngIf="!bought && !errorBuying">
+        <span><i class="fa fa-spin fa-spinner"></i>Achat en cours !</span> 
+    </div>
+    <div *ngIf="bought">Achat effectué !</div>
+    <div *ngIf="errorBuying">Erreur !</div>
 </div>

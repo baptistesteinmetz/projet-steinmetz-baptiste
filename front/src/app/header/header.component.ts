@@ -13,15 +13,17 @@ import { ProductState } from '../../shared/states/product-state';
 export class HeaderComponent implements OnInit {
 
   public nbProducts$: Observable<number>;
-  public loggedUser:string = null;
+  public loggedUser$:string = null;
 
   constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.nbProducts$ = this.store.select(state => state.listProducts.products.length);
     this.store.select(UserState.getUser).subscribe(
-      (data) => this.loggedUser = data.login
+      (data) => {
+        if(data) this.loggedUser$ = data.login;
+        else this.loggedUser$ = '';
+      }
     );
   }
-
 }

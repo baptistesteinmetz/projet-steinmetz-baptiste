@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   public login: string;
   public logged: boolean = false;
   public waiting: boolean = false;
-  public logErr :boolean = null;
+  public errorLogIn :boolean = false;
   public loggedUser:User = new User();
 
 
@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit {
       login: [null, Validators.required],
       password: [null, Validators.required],
     });
-    this.logErr = null;
   }
 
   onSubmit(event)
@@ -47,9 +46,9 @@ export class LoginComponent implements OnInit {
       }
       else {
         this.waiting = false;
-        this.form.value.login = null;
-        this.form.value.password = null;
-        this.logErr = true;
+        this.login = null;
+        this.password = null;
+        this.errorLogIn = true;
       }
     });
   }

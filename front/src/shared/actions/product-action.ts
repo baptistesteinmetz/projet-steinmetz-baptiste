@@ -9,6 +9,10 @@ export class DelProduct {
   static readonly type = '[Product] Del';
   constructor(public payload: Product) {}
 }
+export class BuyProduct {
+  static readonly type = '[Product] Buy';
+  constructor(public payload: Product) {}
+}
 export class ShowProduct {
   static readonly type = '[Product] Show';
   constructor(public payload: Product) {}

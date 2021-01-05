@@ -1,7 +1,7 @@
 import { UserStateModel } from './user-state-model';
 // add actions : login => store username to display it
 // adduser and store it
-import { ShowUser, ConnectUser, AddUser } from './../actions/user-action';
+import { ShowUser, ConnectUser, AddUser, DelUser } from './../actions/user-action';
 import { NgxsModule, Action, Selector, State, StateContext } from '@ngxs/store';
 import { User } from '../models/User';
 
@@ -33,8 +33,6 @@ export class UserState {
     { payload }: AddUser
   ) {
     const state = getState();
-    // if(!state.products.find((product)=> product.id === payload.id)){
-      // ProductState.getFullPriceProducts(state);
     patchState({
       user: payload
     });
@@ -53,6 +51,18 @@ export class UserState {
       //   products: state.products
       // });
     }
+
+    @Action(DelUser)
+    del(
+      { getState, patchState }: StateContext<UserStateModel>,
+      { payload }: DelUser,
+    ) {
+      const state = getState();
+      patchState({
+        user: null
+      });
+    }
+
 
 @Action(ShowUser)
 show(

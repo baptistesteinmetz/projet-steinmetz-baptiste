@@ -1,3 +1,5 @@
+import { DelUser } from './../../../shared/actions/user-action';
+import { UserService } from './../../user.service';
 import { tap } from 'rxjs/operators';
 import { UserState } from './../../../shared/states/user-state';
 import { Observable } from 'rxjs';
@@ -59,17 +61,25 @@ export class RecapComponent implements OnInit {
 
   user$: Observable<User>;
 
-  constructor(private store: Store) {
-    // get user from store$
-
+  constructor(private store: Store, private userService: UserService) {
   }
 
   ngOnInit(): void {
-    // console.log('init')
-    this.store.select(UserState.getUser).subscribe(
-      (data) => {this.user = data;}
-    );
+    if(this.formValidate)
+    {
+      this.store.select(UserState.getUser).subscribe(
+        (data) => {this.user = data;}
+      );
+    }
   }
   // @Input () userName: string;
 
+  onDelete(user: User): void {
+    this.userService.deleteUser(user).subscribe((response) => {
+      if(response.success) {
+        this.store.dispatch(new DelUser(user));
+        this.formValidate = false;
+      }
+    })
+  }
 }
