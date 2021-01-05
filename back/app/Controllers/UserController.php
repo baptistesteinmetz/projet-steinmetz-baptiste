@@ -22,10 +22,23 @@ class UserController {
         }
         if (!$err) {
             $userRepo = $entityManager->getRepository('User');
-            $user = $userRepo->findOneBy(array('login' => $login));
-            if ($user && $login == $user->getLogin() && $password == $user->getPassword()) {
-                $data = array('nom' => $user->getFirstname(), 'prenom' => $user->getLastname());
-                $response = $this->createJwt($response, $user);
+            $user = $userRepo->findOneBy(array('login' => $login)) ?? $userRepo->findOneBy(array('mail' => $login));
+            if ($user && ($login == $user->getLogin() || $login == $user->getMail()) && $password == $user->getPassword()) {
+                $response = $this->createJwt($response, $user);                
+                $data = [
+                    'idUser' => $user->getIdUser(),
+                    'firstname' => $user->getFirstname(),
+                    'lastname' => $user->getLastname(),
+                    'login' => $user->getLogin(),
+                    'password' => $user->getPassword(),
+                    'address' => $user->getAddress(),
+                    'zipcode' => $user->getZipcode(),
+                    'city' => $user->getCity(),
+                    'gender' => $user->getGender(),
+                    'mail' => $user->getMail(),
+                    'country' => $user->getCountry(),
+                    'phone' => $user->getPhone(),
+                ];
                 $response->getBody()->write(json_encode([
                     "success" => true,
                     "data" => $data,
@@ -36,14 +49,11 @@ class UserController {
                 $response->getBody()->write(json_encode([
                     "success" => false
                 ]));     
-                $response = $response->withStatus(401);
             }
         } else {
             $response->getBody()->write(json_encode([
                 "success" => false,
-                "body" => $body,
             ]));
-            $response = $response->withStatus(401);
         }
         return $response;
     }
@@ -80,7 +90,6 @@ class UserController {
             $result = [
                 "success" => false,
             ];
-            $response = $response->withStatus(401);
         }
         else {
             $user = new User();
@@ -97,12 +106,28 @@ class UserController {
             ->setLogin($login)
             ->setGender($gender)
             ;
+
+            $entityManager->persist($user);
+
+            $entityManager->flush();
+            $data = [
+                'idUser' => $user->getIdUser(),
+                'firstname' => $user->getFirstname(),
+                'lastname' => $user->getLastname(),
+                'login' => $user->getLogin(),
+                'password' => $user->getPassword(),
+                'address' => $user->getAddress(),
+                'zipcode' => $user->getZipcode(),
+                'city' => $user->getCity(),
+                'gender' => $user->getGender(),
+                'mail' => $user->getMail(),
+                'country' => $user->getCountry(),
+                'phone' => $user->getPhone(),
+            ];
             $result = [
                 "success" => true,
-                "user" => $body,
+                "data" => $data,
             ];
-            $entityManager->persist($user);
-            $entityManager->flush();
             $response->getBody()->write(json_encode($result));
             $response->withHeader("Content-Type", "application/json");
             // ->withHeader('Access-Control-Expose-Headers', '*');
@@ -119,7 +144,6 @@ class UserController {
         foreach($body as $key => $value){
             ${$key} = $value ?? "";
         }
-        // TODO : pregmatch à améliorer
         if (!preg_match("/[a-zA-Z0-9]{1,20}/",$password ||$password == ""))  {
             $err=true;
         }
@@ -143,7 +167,6 @@ class UserController {
             $result = [
                 "success" => false,
             ];
-            $response = $response->withStatus(401);
         }
         else {
             $user = $userRepo->findOneBy(array('idUser' => $idUser));
@@ -178,7 +201,8 @@ class UserController {
     public function getUser(Request $request, Response $response, array $args) {
         require_once  __DIR__ . './../../bootstrap.php';
         $id = intval($args['id']);
-        $user = $entityManager->getRepository('User')->findOneByIdUser($id);
+        $userRepo = $entityManager->getRepository('User');
+        $user = $userRepo->findOneBy(array("idUser" => $id));
         if($user) {
             $data = [
                 'idUser' => $user->getIdUser(),
@@ -201,12 +225,54 @@ class UserController {
             ]));
         }
         else {
-            $response = $response->withStatus(401);
+            $response->getBody()->write(json_encode([
+                'success' => false,
+            ]));
         }
-
         $response->withHeader("Content-Type", "application/json");
         return $response;
     }
+
+    public function logoff(Request $request, Response $response, array $args) {
+        require_once  __DIR__ . './../../bootstrap.php';
+        $userRepo = $entityManager->getRepository('User');
+        $body = $request->getParsedBody();
+        $user = $userRepo->findOneBy(array('idUser' => $body['idUser']));
+        if($user) {
+            $result = [
+                'success' => true,
+            ];
+        } else {
+            $result = [
+                'success' => false,
+            ];
+        }
+        $response->getBody()->write(json_encode($result));
+        $response->withHeader("Content-Type", "application/json");
+        return $response;
+    }
+
+    public function delete(Request $request, Response $response, array $args) {
+        require_once  __DIR__ . './../../bootstrap.php';
+        $userRepo = $entityManager->getRepository('User');
+        $body = $request->getParsedBody();
+        $user = $userRepo->findOneBy(array('idUser' => $body['idUser']));
+        if($user) {
+            $entityManager->remove($user);
+            $entityManager->flush();
+            $result = [
+                'success' => true,
+            ];
+        } else {
+            $result = [
+                'success' => false,
+            ];
+        }
+        $response->getBody()->write(json_encode($result));
+        $response->withHeader("Content-Type", "application/json");
+        return $response;
+    }
+
 
     // create JWT
     function createJwt (Response $response, User $user) : Response {

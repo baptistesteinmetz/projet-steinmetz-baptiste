@@ -22,8 +22,10 @@ return function(App $app) {
     $app->group('/user', function(Group $group){
         // definition des routes
         $group->post("/login", "App\Controllers\UserController:login");
+        $group->post("/logoff", "App\Controllers\UserController:logoff");
         $group->post("/register", "App\Controllers\UserController:register");
         $group->post("/update", "App\Controllers\UserController:update");
+        $group->post("/delete", "App\Controllers\UserController:delete");
         $group->get("/get/{id}", "App\Controllers\UserController:getUser");
         
     });
@@ -31,7 +33,7 @@ return function(App $app) {
         // definition des routes
         $group->get("/all", "App\Controllers\ProductController:getAll");
         $group->get("/{id}", "App\Controllers\ProductController:getOne");
-        
+        $group->post("/buy", "App\Controllers\ProductController:buyArticle");
     });
 
 };

@@ -79,4 +79,24 @@ class ProductController {
         ->withHeader('Access-Control-Expose-Headers', '*');
     }
 
+    public function buyArticle(Request $request, Response $response, $args) {
+        require_once __DIR__ . './../../bootstrap.php';
+        $body = $request->getParsedBody();
+        $price = json_decode($body['price']);
+        if($price == 0){
+            $response->getBody()->write(json_encode([
+                "success" => false,
+            ]));
+        }
+        else {
+            $response->getBody()->write(json_encode([
+                "success" => true,
+                'data' => $price
+            ]));
+        }
+        return $response
+        ->withHeader("Content-Type", "application/json")
+        ->withHeader('Access-Control-Expose-Headers', '*');
+    }
+
 }
