@@ -16,7 +16,7 @@
 :host #homepage .homepage-routes a.btn-routes {
   width: 15em;
   text-decoration: none;
-  font-size: 1em;
+  // font-size: 1em;
   color: white;
   background-color: #23758e;
   padding: 8px;
@@ -30,6 +30,6 @@
   justify-content: space-between;
 }
 :host #homepage .homepage-routes a.btn-routes:hover {
-  font-size: 1.1em;
+  // font-size: 1.1em;
   opacity: 1;
 }

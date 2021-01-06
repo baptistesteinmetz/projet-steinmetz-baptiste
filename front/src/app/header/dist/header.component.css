@@ -31,7 +31,7 @@ nav .header-navigation ul li a {
 }
 nav .header-shopping-cart {
   margin-right: 8em;
-  font-size: 1.5em;
+  /* // font-size: 1.5em; */
 }
 nav .header-shopping-cart a {
   width: 50px;

@@ -22,7 +22,7 @@
   justify-content: center;
 }
 .product-loading span {
-  font-size: 70px;
+  // font-size: 70px;
   color: #4ca2b1;
 }
 
@@ -134,7 +134,7 @@
   top: 10em;
   left: -10px;
   cursor: pointer;
-  font-size: 2em;
+  // font-size: 2em;
   color: #b9adada8;
   transition: 0.5s all ease-in-out;
 }

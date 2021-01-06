@@ -159,7 +159,6 @@ export class RecapComponent implements OnInit {
     this.user.firstname = this.form.value.firstname;
     if (this.form.valid) {
       this.userService.updateUser(this.user).subscribe((response) => {
-        console.log(response);
         if(response.success)
         {
           this.store.dispatch(new AddUser(response.data));

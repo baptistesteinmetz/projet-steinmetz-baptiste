@@ -68,7 +68,6 @@ export class FormComponent implements OnInit, Validators {
       }
       if(!data) this.formValidate = false;
     });
-    console.log(this.formModify);
   }
 
   initForm(): void {
