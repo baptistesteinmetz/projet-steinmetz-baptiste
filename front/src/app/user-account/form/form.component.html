@@ -65,12 +65,12 @@
                 </div>
             </div>
             <div class="c-input-one">
-                <label for="address">Adress:</label>
-                <input formControlName="address" [(ngModel)]="user.address" type="text" id="adress" name="adress">
+                <label for="address">Address:</label>
+                <input formControlName="address" [(ngModel)]="user.address" type="text" id="address" name="address">
                 <div *ngIf="isValidInput('address')">
-                    <span class="err-input" *ngIf="f.adress.errors && f.adress.errors.required">Required</span>
-                    <span class="err-input" *ngIf="f.adress.errors.pattern">
-                Must be a valid adress format.
+                    <span class="err-input" *ngIf="f.address.errors && f.address.errors.required">Required</span>
+                    <span class="err-input" *ngIf="f.address.errors.pattern">
+                Must be a valid address format.
               </span>
                 </div>
             </div>

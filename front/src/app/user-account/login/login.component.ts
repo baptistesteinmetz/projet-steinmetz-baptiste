@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
   onSubmit(event)
   {
     this.waiting = true;
+    this.errorLogIn = false;
     this.apiService.setJWT();
     this.userService.logUser(this.login, this.password).subscribe((response) => {
       // add user to connect store

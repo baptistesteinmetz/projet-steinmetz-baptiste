@@ -45,7 +45,7 @@ var FormComponent = /** @class */ (function () {
                     forms_1.Validators.pattern('^[0-9]+$'),
                     forms_1.Validators.required,
                 ]],
-            adress: [null, forms_1.Validators.required],
+            address: [null, forms_1.Validators.required],
             login: [null, forms_1.Validators.required],
             mail: [null,
                 [

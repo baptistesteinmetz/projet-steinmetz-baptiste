@@ -42,10 +42,10 @@
   flex-direction: column;
   align-items: flex-start;
 }
-.user-card .user-card-adress {
+.user-card .user-card-address {
   padding: 15px;
 }
-.user-card .user-card-adress div p {
+.user-card .user-card-address div p {
   text-align: center;
 }
 .user-card .user-card-ok {

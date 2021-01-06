@@ -35,6 +35,7 @@ export class FormComponent implements OnInit, Validators {
 
   form: FormGroup;
   public formValidate: boolean = false;
+  public formModify: boolean = false;
   public errorSignIn: boolean = false;
   public waiting: boolean = false;
 
@@ -45,17 +46,17 @@ export class FormComponent implements OnInit, Validators {
   // @Input() userName: string = this.user.firstname;
 
   constructor(private fb: FormBuilder, private userService: UserService, private userstore: Store) {
-    this.user.gender = 'Man';
-    this.user.country = 'fr';
-    this.user.firstname = 'Baptiste';
-    this.user.lastname = 'Steinmetz';
-    this.user.mail = 'baptiste@mail.mail';
-    this.user.phone = '0619735555';
-    this.user.login = 'baptiste67';
-    this.user.password = 'baptiste';
-    this.user.address = '1 rue saint léon';
-    this.user.zipcode = '67700';
-    this.user.city = 'saverne';
+    // this.user.gender = 'Man';
+    // this.user.country = 'fr';
+    // this.user.firstname = 'Baptiste';
+    // this.user.lastname = 'Steinmetz';
+    // this.user.mail = 'baptiste@mail.mail';
+    // this.user.phone = '0619735555';
+    // this.user.login = 'baptiste67';
+    // this.user.password = 'baptiste';
+    // this.user.address = '1 rue saint léon';
+    // this.user.zipcode = '67700';
+    // this.user.city = 'saverne';
   }
 
   ngOnInit(): void {
@@ -67,6 +68,7 @@ export class FormComponent implements OnInit, Validators {
       }
       if(!data) this.formValidate = false;
     });
+    console.log(this.formModify);
   }
 
   initForm(): void {

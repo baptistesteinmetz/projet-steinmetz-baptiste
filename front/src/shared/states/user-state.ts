@@ -1,7 +1,7 @@
 import { UserStateModel } from './user-state-model';
 // add actions : login => store username to display it
 // adduser and store it
-import { ShowUser, ConnectUser, AddUser, DelUser } from './../actions/user-action';
+import { ShowUser, ConnectUser, AddUser, DelUser, LogOffUser } from './../actions/user-action';
 import { NgxsModule, Action, Selector, State, StateContext } from '@ngxs/store';
 import { User } from '../models/User';
 
@@ -44,18 +44,26 @@ export class UserState {
     { payload }: ConnectUser,
   ) {
     const state = getState();
-    // const index = state.products.indexOf(payload);
-    // state.products.splice(index, 1);
-      // patchState({
-      //   // supprimer le payload dans users
-      //   products: state.products
-      // });
+    patchState({
+      user: payload
+    });
     }
 
     @Action(DelUser)
     del(
       { getState, patchState }: StateContext<UserStateModel>,
       { payload }: DelUser,
+    ) {
+      const state = getState();
+      patchState({
+        user: null
+      });
+    }
+    
+    @Action(LogOffUser)
+    logoff(
+      { getState, patchState }: StateContext<UserStateModel>,
+      { payload }: LogOffUser,
     ) {
       const state = getState();
       patchState({

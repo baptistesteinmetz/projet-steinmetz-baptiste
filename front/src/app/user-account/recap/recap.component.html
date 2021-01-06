@@ -3,7 +3,7 @@
         <div class="user-card-header">
             <p>Welcome {{user.firstname}}, here's your account information!</p>
         </div>
-        <div class="user-card-info">
+        <div class="user-card-info" *ngIf="!formModify" >
             <div>
                 <p>{{user.firstname}} {{user.lastname}}
                     <span *ngIf="user.gender == 'Man'">♂
@@ -14,21 +14,169 @@
                 <p>{{user.login}}</p>
                 <p>{{user.mail}}</p>
             </div>
-        </div>
-        <div class="user-card-adress">
-            <div>
-                <p>{{user.address}}, {{user.city}}, {{user.zipcode}}</p>
-                <p *ngIf="user.phone"> {{user.country | callcode}} {{user.phone | phone }}</p>
+            <div class="user-card-address">
+                <div>
+                    <p>{{user.address}}, {{user.city}}, {{user.zipcode}}</p>
+                    <p *ngIf="user.phone"> {{user.country | callcode}} {{user.phone | phone }}</p>
+                </div>
             </div>
         </div>
+
+        <form *ngIf="formModify" [formGroup]="form" (ngSubmit)="modifyUser($event)">
+            <div class="c-input">
+                <div class="c-input-one">
+                    <label for="lastname">Lastname:</label>
+                    <input [(ngModel)]="user.lastname" formControlName="lastname" type="text" id="lastname" name="lastname">
+                    <div *ccErrorInput="!isValidInput('lastname')">
+                        <span class="err-input" *ngIf="f.lastname.errors && f.lastname.errors.required">Required</span>
+                        <span class="err-input" *ngIf="f.lastname.errors.pattern">
+                  Must be a valid name format.
+                </span>
+                    </div>
+                </div>
+
+                <div class="c-input-one">
+                    <label for="firstname">Firstname:</label>
+                    <input type="text" [(ngModel)]="user.firstname" formControlName="firstname" id="firstname" name="firstname">
+                    <div *ngIf="isValidInput('firstname')">
+                        <span class="err-input" *ngIf="f.firstname.errors && f.firstname.errors.required">Required</span>
+                        <span class="err-input" *ngIf="f.firstname.errors.pattern">
+                Must be a valid name format.
+              </span>
+                    </div>
+                </div>
+                <div class="c-input-one">
+                    <label for="gender">Gender:</label>
+                    <select [(ngModel)]="user.gender" formControlName="gender" id="gender" name="gender">
+              <option value="Man" selected>M</option>
+              <option value="Woman">F</option>
+            </select>
+                    <div *ngIf="isValidInput('firstname')">
+                        <span class="err-input" *ngIf="f.firstname.errors && f.firstname.errors.required">Required</span>
+                        <span class="err-input" *ngIf="f.firstname.errors.pattern">
+                Must be a valid name format.
+              </span>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="c-input">
+                <div class="c-input-one">
+                    <label for="name">City:</label>
+                    <input formControlName="city" [(ngModel)]="user.city" type="text" id="city" name="namcitye">
+                    <div *ngIf="isValidInput('city')">
+                        <span class="err-input" *ngIf="f.city.errors && f.city.errors.required">Required</span>
+                        <span class="err-input" *ngIf="f.city.errors.pattern">
+                  Must be a valid city format.
+                </span>
+                    </div>
+                </div>
+                <div class="c-input-one">
+                    <label for="name">Zipcode (5 char):</label>
+                    <input formControlName="zipcode" [(ngModel)]="user.zipcode" type="text" id="zip" name="zip" minlength="5" maxlength="5" size="5">
+                    <div *ngIf="isValidInput('zipcode')">
+                        <span class="err-input" *ngIf="f.zipcode.errors && f.zipcode.errors.required">Required</span>
+                        <span class="err-input" *ngIf="f.zipcode.errors.pattern">
+                  Must be a valid zipcode format.
+                </span>
+                    </div>
+                </div>
+            </div>
+            <div class="c-input-one">
+                <label for="address">Address:</label>
+                <input formControlName="address" [(ngModel)]="user.address" type="text" id="address" name="address">
+                <div *ngIf="isValidInput('address')">
+                    <span class="err-input" *ngIf="f.address.errors && f.address.errors.required">Required</span>
+                    <span class="err-input" *ngIf="f.address.errors.pattern">
+                Must be a valid address format.
+              </span>
+                </div>
+            </div>
+            <div class="c-input-one">
+                <label for="phone">Phone number:</label>
+                <div>
+                    <select [(ngModel)]="user.country" formControlName="country" id="country" name="country">
+                <option value="fr" selected>fr</option>
+                <option value="en" >en</option>
+                <option value="us">us</option>
+                <option value="gr">gr</option>
+              </select>
+                    <input formControlName="phone" [(ngModel)]="user.phone" type="text" id="phone" name="phone" maxlength="10">
+                    <div *ngIf="isValidInput('phone')">
+                        <span class="err-input" *ngIf="f.phone.errors && f.phone.errors.required">Required</span>
+                        <span class="err-input" *ngIf="f.phone.errors.pattern">
+                    Must be a valid phone format.
+                  </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="c-input-one">
+                <label for="mail">Login :</label>
+                <input formControlName="login" [(ngModel)]="user.login" type="text" id="login" name="login">
+                <div *ngIf="isValidInput('login')">
+                    <span class="err-input" *ngIf="f.login.errors && f.login.errors.required">Required</span>
+                    <span class="err-input" *ngIf="f.login.errors.pattern">
+              Must be a valid login format.
+            </span>
+                </div>
+            </div>
+            <div class="c-input-one">
+                <label for="mail">Mail :</label>
+                <input formControlName="mail" [(ngModel)]="user.mail" type="text" id="mail" name="mail">
+                <div *ngIf="isValidInput('mail')">
+                    <span class="err-input" *ngIf="f.mail.errors && f.mail.errors.required">Required</span>
+                    <span class="err-input" *ngIf="f.mail.errors.pattern">
+                Must be a valid mail format.
+              </span>
+                </div>
+            </div>
+            <div class="c-input-one">
+                <label for="pass">Password:</label>
+                <input formControlName="password" [(ngModel)]="user.password" type="password" id="password" name="password">
+                <div *ngIf="isValidInput('password')">
+                    <div *ngIf="f.password.errors &&  f.password.errors.required">Required</div>
+                </div>
+            </div>
+            <div class="c-input-one">
+                <label for="confirm-pass">Confirm password:</label>
+                <input type="password" id="confirm-pass" name="confirm-pass" formControlName="confirmPassword" required>
+                <div *ngIf="isValidInput('confirmPassword')">
+                    <span class="err-input" *ngIf="!f.confirmPassword && f.confirmPassword.errors.required">Confirmation password is required</span>
+                    <span class="err-input" *ngIf="f.confirmPassword.errors.mustMatch">Passwords should match</span>
+                </div>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="c-input btn-container">
+                <button *ngIf="!waiting" type="submit" class="validate" value="Valider" [disabled]="!form.valid">
+              Valider
+            </button>
+                <i *ngIf="waiting" class="fa fa-spin fa-spinner" aria-hidden="true"></i>
+            </div>
+        </form>
+
+
         <div class="user-card-ok">
             <p>See you soon!</p>
         </div>
+
+        
     </div>
 
     <div>
+        <button (click)="onLogOff(user)" class="logoff" value="Logoff">
+            Déconnexion
+        </button>
+        <button (click)="onModifyAccount(user)" class="logoff" value="Logoff">
+            Modifier compte
+        </button>
         <button (click)="onDelete(user)" class="delete" value="Supprimer">
-            Submit
+            Supprimer compte
         </button>
     </div>
 </div>

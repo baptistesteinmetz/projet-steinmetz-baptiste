@@ -17,3 +17,7 @@ export class DelUser {
   static readonly type = '[User] Del';
   constructor(public payload: User) {}
 }
+export class LogOffUser {
+  static readonly type = '[User] LogOff';
+  constructor(public payload: User) {}
+}

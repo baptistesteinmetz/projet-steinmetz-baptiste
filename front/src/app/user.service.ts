@@ -24,7 +24,7 @@ export class UserService extends ApiService {
     const  body = new URLSearchParams();
     body.set('firstname', u.firstname);
     body.set('lastname', u.lastname);
-    body.set('adress', u.address);
+    body.set('address', u.address);
     body.set('zipcode', u.zipcode);
     body.set('city', u.city);
     body.set('gender', u.gender);
@@ -45,7 +45,7 @@ export class UserService extends ApiService {
     body.set('idUser', u.idUser.toString());
     body.set('firstname', u.firstname);
     body.set('lastname', u.lastname);
-    body.set('adress', u.address);
+    body.set('address', u.address);
     body.set('zipcode', u.zipcode);
     body.set('city', u.city);
     body.set('gender', u.gender);
@@ -74,6 +74,14 @@ export class UserService extends ApiService {
     body.set('password',pwd);
     return this.hClient.post<any>(environment.api + '/user/login', body.toString(), this.httpOptions).pipe(
       tap((response) => response)
+    );
+  }
+
+  public logOffUser(u: User) : Observable<any> {
+    const  body = new URLSearchParams();
+    body.set('idUser', u.idUser.toString());
+    return this.hClient.post<any>(environment.api + '/user/logoff', body.toString(), this.httpOptions).pipe(
+      map((response) => response)
     );
   }
 }

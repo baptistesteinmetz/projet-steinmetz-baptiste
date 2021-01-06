@@ -15,7 +15,7 @@ export class User {
     constructor () {
       // this.firstname = firstname;
       // this.lastname = lastname;
-      // this.adress = adress;
+      // this.address = address;
       // this.zipcode = zipcode;
       // this.city = city;
       // this.gender = gender;
