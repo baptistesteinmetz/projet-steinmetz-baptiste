@@ -174,4 +174,9 @@ export class RecapComponent implements OnInit {
 
     }
   }
+
+  return() {
+    this.formModify = false;
+    this.clickModify = false;
+  }
 }

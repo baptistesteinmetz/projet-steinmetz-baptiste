@@ -38,8 +38,8 @@
 
 <div *ngIf="buying" class="shopping-cart-buying">
     <div *ngIf="!bought && !errorBuying">
-        <span><i class="fa fa-spin fa-spinner"></i>Achat en cours !</span> 
+        <span><i class="fa fa-spin fa-spinner"></i> Purchasing items...</span> 
     </div>
-    <div *ngIf="bought">Achat effectué !</div>
-    <div *ngIf="errorBuying">Erreur !</div>
+    <div *ngIf="bought">Items purchased!</div>
+    <div *ngIf="errorBuying">Oops, there was an error</div>
 </div>

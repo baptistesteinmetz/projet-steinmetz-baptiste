@@ -154,3 +154,23 @@ body,
     flex-direction: column;
     justify-content: space-between;
 }
+
+button.validate {
+    cursor: pointer;
+    border: none;
+    position: relative;
+    background: #18f7f7;
+    border-radius: 5px;
+    margin: 5px;
+    height: 35px;
+    transition: all ease-out 1s;
+    width: 12em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+button:disabled
+{
+    cursor: not-allowed;
+
+} 

@@ -152,10 +152,13 @@
 
             <div class="separator"></div>
 
-            <div class="c-input btn-container">
-                <button *ngIf="!waiting" type="submit" class="validate" value="Modifier" [disabled]="!form.valid">
-              Modifier
-            </button>
+            <div class="c-input btn-container" >
+                <button class="user-btn-btn" *ngIf="!waiting" type="submit"  value="Modifier" [disabled]="!form.valid">
+                    Update
+                </button>
+                <button class="user-btn-btn" *ngIf="!waiting" (click)="return()"   value="Modifier" >
+                    Return
+                </button>
                 <i *ngIf="waiting" class="fa fa-spin fa-spinner" aria-hidden="true"></i>
             </div>
         </form>
@@ -168,20 +171,20 @@
         
     </div>
 
-    <div *ngIf="!clickModify" >
-        <button (click)="onLogOff(user)" class="logoff" value="Logoff">
-            Déconnexion
+    <div *ngIf="!clickModify" class="user-btn-cnt">
+        <button class="user-btn-btn"  (click)="onLogOff(user)" value="Logoff">
+            Log Off
         </button>
-        <button (click)="onModifyAccount(user)" class="logoff" value="Logoff">
-            Modifier compte
+        <button class="user-btn-btn" (click)="onModifyAccount(user)"  value="Logoff">
+            Update Account
         </button>
-        <button (click)="onClickDelete()" class="delete" value="Supprimer">
-            Supprimer compte
+        <button class="user-btn-btn" (click)="onClickDelete()"  value="Supprimer">
+            Delete account
         </button>
     </div>
-    <div *ngIf="clickDelete" >
-        <button (click)="onDelete(user)" class="delete" value="Supprimer">
-            Valider
+    <div *ngIf="clickDelete" class="user-btn-cnt" >
+        <button class="user-btn-btn" (click)="onDelete(user)"  value="Supprimer">
+            Confirm delete
         </button>
     </div>
 </div>
