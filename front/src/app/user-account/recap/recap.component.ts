@@ -61,7 +61,8 @@ export class RecapComponent implements OnInit {
 
   @Input () formValidate: boolean = false;
   @Input () formModify: boolean = false;
-
+  public clickModify:boolean = false;
+  public clickDelete:boolean = false;
   user$: Observable<User>;
 
   constructor(private store: Store, private userService: UserService, private fb: FormBuilder) {
@@ -97,12 +98,11 @@ export class RecapComponent implements OnInit {
   onModifyAccount(user: User): void {
        this.initForm();
       this.formModify = true;
-    // this.userService.logOffUser(user).subscribe((response) => {
-    //   if(response.success) {
-    //     this.store.dispatch(new LogOffUser(user));
-    //     this.formValidate = false;
-    //   }
-    // })
+      this.clickModify = true;
+  }
+  onClickDelete(): void {
+      this.clickDelete = true;
+      this.clickModify = true;
   }
 
   initForm(): void {
@@ -156,6 +156,7 @@ export class RecapComponent implements OnInit {
 
   modifyUser(event) {
     event.preventDefault();
+    this.clickModify = true;
     this.user.firstname = this.form.value.firstname;
     if (this.form.valid) {
       this.userService.updateUser(this.user).subscribe((response) => {
@@ -164,6 +165,8 @@ export class RecapComponent implements OnInit {
           this.store.dispatch(new AddUser(response.data));
           this.formValidate=true;
           this.formModify=false;
+          this.clickModify = false;
+
         }
         else {
         }

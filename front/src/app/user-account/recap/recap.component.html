@@ -153,8 +153,8 @@
             <div class="separator"></div>
 
             <div class="c-input btn-container">
-                <button *ngIf="!waiting" type="submit" class="validate" value="Valider" [disabled]="!form.valid">
-              Valider
+                <button *ngIf="!waiting" type="submit" class="validate" value="Modifier" [disabled]="!form.valid">
+              Modifier
             </button>
                 <i *ngIf="waiting" class="fa fa-spin fa-spinner" aria-hidden="true"></i>
             </div>
@@ -168,15 +168,20 @@
         
     </div>
 
-    <div>
+    <div *ngIf="!clickModify" >
         <button (click)="onLogOff(user)" class="logoff" value="Logoff">
             Déconnexion
         </button>
         <button (click)="onModifyAccount(user)" class="logoff" value="Logoff">
             Modifier compte
         </button>
-        <button (click)="onDelete(user)" class="delete" value="Supprimer">
+        <button (click)="onClickDelete()" class="delete" value="Supprimer">
             Supprimer compte
+        </button>
+    </div>
+    <div *ngIf="clickDelete" >
+        <button (click)="onDelete(user)" class="delete" value="Supprimer">
+            Valider
         </button>
     </div>
 </div>
