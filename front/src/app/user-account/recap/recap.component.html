@@ -1,15 +1,17 @@
 <div *ngIf="formValidate">
-    <div class="user-card" [ngClass]="{'user-boy': user.gender == 'Man', 'user-girl':user.gender == 'Woman'}">
+    <div class="user-card" [ngClass]="{'user-boy': user.gender == 'Man', 'user-girl':user.gender == 'Woman', 'user-other':user.gender == 'Other'}">
         <div class="user-card-header">
             <p>Welcome {{user.firstname}}, here's your account information!</p>
         </div>
-        <div class="user-card-info" *ngIf="!formModify" >
+        <div class="user-card-info" *ngIf="!formModify">
             <div>
                 <p>{{user.firstname}} {{user.lastname}}
                     <span *ngIf="user.gender == 'Man'">♂
          </span>
                     <span *ngIf="user.gender == 'Woman'">♀
          </span>
+                    <span *ngIf="user.gender == 'Other'">⚧
+                </span>
                 </p>
                 <p>{{user.login}}</p>
                 <p>{{user.mail}}</p>
@@ -50,6 +52,7 @@
                     <select [(ngModel)]="user.gender" formControlName="gender" id="gender" name="gender">
               <option value="Man" selected>M</option>
               <option value="Woman">F</option>
+              <option value="Other">Other</option>
             </select>
                     <div *ngIf="isValidInput('firstname')">
                         <span class="err-input" *ngIf="f.firstname.errors && f.firstname.errors.required">Required</span>
@@ -152,38 +155,39 @@
 
             <div class="separator"></div>
 
-            <div class="c-input btn-container" >
-                <button class="user-btn-btn" *ngIf="!waiting" type="submit"  value="Modifier" [disabled]="!form.valid">
+            <div class="c-input btn-container">
+                <button class="user-btn-btn" *ngIf="!waiting" type="submit" value="Modifier" [disabled]="!form.valid">
                     Update
                 </button>
-                <button class="user-btn-btn" *ngIf="!waiting" (click)="return()"   value="Modifier" >
+                <button class="user-btn-btn" *ngIf="!waiting" (click)="return()" value="Modifier">
                     Return
                 </button>
                 <i *ngIf="waiting" class="fa fa-spin fa-spinner" aria-hidden="true"></i>
+                <div *ngIf="errorSignIn"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{errorMessage}}</div>
+
             </div>
         </form>
 
 
         <div class="user-card-ok">
-            <p>See you soon!</p>
         </div>
 
-        
+
     </div>
 
     <div *ngIf="!clickModify" class="user-btn-cnt">
-        <button class="user-btn-btn"  (click)="onLogOff(user)" value="Logoff">
+        <button class="user-btn-btn" (click)="onLogOff(user)" value="Logoff">
             Log Off
         </button>
-        <button class="user-btn-btn" (click)="onModifyAccount(user)"  value="Logoff">
+        <button class="user-btn-btn" (click)="onModifyAccount(user)" value="Logoff">
             Update Account
         </button>
-        <button class="user-btn-btn" (click)="onClickDelete()"  value="Supprimer">
+        <button class="user-btn-btn" (click)="onClickDelete()" value="Supprimer">
             Delete account
         </button>
     </div>
-    <div *ngIf="clickDelete" class="user-btn-cnt" >
-        <button class="user-btn-btn" (click)="onDelete(user)"  value="Supprimer">
+    <div *ngIf="clickDelete" class="user-btn-cnt">
+        <button class="user-btn-btn" (click)="onDelete(user)" value="Supprimer">
             Confirm delete
         </button>
     </div>

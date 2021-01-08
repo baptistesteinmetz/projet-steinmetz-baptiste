@@ -1,7 +1,7 @@
 <!-- <p>form works!</p>  -->
 <!-- <span> {{ user.firstname }} </span> -->
 <div id="section-main">
-    <div id="section-form" *ngIf="!formValidate"  (formValidate)="formValidate = $event">
+    <div id="section-form" *ngIf="!formValidate" (formValidate)="formValidate = $event">
         <app-header-form></app-header-form>
         <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
             <div class="c-input">
@@ -31,6 +31,7 @@
                     <select [(ngModel)]="user.gender" formControlName="gender" id="gender" name="gender">
               <option value="Man" selected>M</option>
               <option value="Woman">F</option>
+              <option value="Other">Other</option>
             </select>
                     <div *ngIf="isValidInput('firstname')">
                         <span class="err-input" *ngIf="f.firstname.errors && f.firstname.errors.required">Required</span>
@@ -142,7 +143,7 @@
         </form>
 
         <app-footer-form>
-            <div *ngIf="errorSignIn"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Oops... There was an error</div>
+            <div *ngIf="errorSignIn"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{errorMessage}}</div>
         </app-footer-form>
     </div>
     <div id="section-log-in" *ngIf="!formValidate">

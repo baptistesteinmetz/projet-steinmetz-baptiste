@@ -25,7 +25,9 @@ export class ShoppingCartComponent implements OnInit {
   public buying:boolean = false;
   public bought: boolean = false;
   public errorBuying: boolean = false;
-
+  ;
+  public responseMessage: string=null;
+  
   constructor(private productService: ProductService, private router: Router, private _renderer: Renderer2, private _elemRef : ElementRef, private store: Store) {
     // i want different styles depending on the route, since the shopping cart is shown on the store page (like amazon)
     if(this.router.url == '/cart') {
@@ -34,7 +36,7 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    
     this.listProduct$ = this.store.select(state => state.listProducts.products);
     // Solution 1
     this.nbProducts$ = this.store.select(ProductState.getNbProducts);
@@ -63,6 +65,7 @@ export class ShoppingCartComponent implements OnInit {
       else {
         this.errorBuying = true;
       }
+      this.responseMessage = response.data;
     })
     let timer$ = timer(3000);
     timer$.subscribe(t=> {

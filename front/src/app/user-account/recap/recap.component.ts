@@ -63,6 +63,8 @@ export class RecapComponent implements OnInit {
   @Input () formModify: boolean = false;
   public clickModify:boolean = false;
   public clickDelete:boolean = false;
+  public errorSignIn: boolean = false;
+  public errorMessage: string = null;
   user$: Observable<User>;
 
   constructor(private store: Store, private userService: UserService, private fb: FormBuilder) {

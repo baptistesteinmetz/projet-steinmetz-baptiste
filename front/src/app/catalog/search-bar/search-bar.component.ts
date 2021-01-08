@@ -21,14 +21,13 @@ export class SearchBarComponent implements OnInit {
   @Input() products: Observable<Product>;
   message: any;
   constructor(private productService: ProductService) {
-    // init value to asc price and no search input
-    this.searchInput = '';
-    this.filterPriceStatus = 1;
    }
 
   ngOnInit(): void {
     // get products
     this.productService.getProducts().subscribe();
+    this.searchInput = '';
+    this.filterPriceStatus = 1;
   }
 
   onSearchProducts() : void
@@ -39,6 +38,7 @@ export class SearchBarComponent implements OnInit {
 
   onFilterPriceProducts() : void {
     // changing status and updating depending on price
+    this.filterNameStatus = null;
     this.filterPriceStatus === 1 ? this.filterPriceStatus = 0 : this.filterPriceStatus = 1;
     this.productService.priceFilter(this.filterPriceStatus).subscribe();
   }

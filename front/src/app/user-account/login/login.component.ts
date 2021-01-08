@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   public logged: boolean = false;
   public waiting: boolean = false;
   public errorLogIn :boolean = false;
+  public errorMessage:string = null;
   public loggedUser:User = new User();
 
 
@@ -44,12 +45,14 @@ export class LoginComponent implements OnInit {
       if(response.success == true) {
         this.loggedUser = response.data;
         this.userstore.dispatch(new AddUser(this.loggedUser));
+        this.errorMessage = null;
       }
       else {
         this.waiting = false;
         this.login = null;
         this.password = null;
         this.errorLogIn = true;
+        this.errorMessage = response.data;
       }
     });
   }

@@ -37,6 +37,7 @@ export class FormComponent implements OnInit, Validators {
   public formValidate: boolean = false;
   public formModify: boolean = false;
   public errorSignIn: boolean = false;
+  public errorMessage: string = null;
   public waiting: boolean = false;
 
   userTab: User[] = [];
@@ -134,6 +135,7 @@ export class FormComponent implements OnInit, Validators {
         else {
           this.waiting = false;
           this.errorSignIn = true;
+          this.errorMessage = response.data;
         }
       });
 

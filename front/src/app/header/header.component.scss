@@ -1,5 +1,6 @@
+@import './../colors.scss';
 nav {
-    background-color: #23758E;
+    background-color: $primary-blue-d;
     min-height: 40px;
     display: flex;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.44);
@@ -31,14 +32,12 @@ nav {
     .header-shopping-cart {
         margin-right: 25px;
         // // font-size: 1.5em;
-        display:flex; 
-        align-items:center;
-
+        display: flex;
+        align-items: center;
         .loggedUser {
             margin-right: 25px;
             // // font-size: 22px;
         }
-
         a {
             width: 50px;
             display: flex;
