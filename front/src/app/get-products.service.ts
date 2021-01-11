@@ -1,10 +1,10 @@
 import { ApiService } from './api.service';
 import { EventEmitter } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Product } from '../shared/models/products';
-import { Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
 import { environment } from '../environments/environment';
 import { catchError, tap, map, filter} from 'rxjs/operators';
 @Injectable(
@@ -121,4 +121,5 @@ export class ProductService extends ApiService {
       map((data) => data)
     );
   }
+
 }

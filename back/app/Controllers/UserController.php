@@ -17,99 +17,12 @@ class UserController {
         require_once  __DIR__ . './../../bootstrap.php';
         $err=false;
         $body = $request->getParsedBody();
-        foreach($body as $key => $value){
-            ${$key} = $value ?? "";
-        }
-        if (!$err) {
-            $userRepo = $entityManager->getRepository('User');
-            $user = $userRepo->findOneBy(array('login' => $login)) ?? $userRepo->findOneBy(array('mail' => $login));
-            if ($user && ($login == $user->getLogin() || $login == $user->getMail()) && $password == $user->getPassword()) {
-                $response = $this->createJwt($response, $user);                
-                $data = [
-                    'idUser' => $user->getIdUser(),
-                    'firstname' => $user->getFirstname(),
-                    'lastname' => $user->getLastname(),
-                    'login' => $user->getLogin(),
-                    'password' => $user->getPassword(),
-                    'address' => $user->getAddress(),
-                    'zipcode' => $user->getZipcode(),
-                    'city' => $user->getCity(),
-                    'gender' => $user->getGender(),
-                    'mail' => $user->getMail(),
-                    'country' => $user->getCountry(),
-                    'phone' => $user->getPhone(),
-                ];
-                $response->getBody()->write(json_encode([
-                    "success" => true,
-                    "data" => $data,
-                ]));
-                $response
-                ->withHeader("Content-Type", "application/json");
-            } else {     
-                $response->getBody()->write(json_encode([
-                    "success" => false
-                ]));     
-            }
-        } else {
-            $response->getBody()->write(json_encode([
-                "success" => false,
-            ]));
-        }
-        return $response;
-    }
-
-    public function register(Request $request, Response $response, array $args) {
-        require_once  __DIR__ . './../../bootstrap.php';
+        $login = $body['login'];
+        $password = $body['password'];
         $userRepo = $entityManager->getRepository('User');
-        $body = $request->getParsedBody();
-        $err = false;
-        foreach($body as $key => $value){
-            ${$key} = $value ?? "";
-        }
-        // TODO : pregmatch à améliorer
-        if (!preg_match("/[a-zA-Z0-9]{1,20}/",$password ||$password == ""))  {
-            $err=true;
-        }
-        if (!preg_match("/[a-zA-Z0-9]{1,20}/",$login) ||$login == "")   {
-            $err = true;
-        }
-        if (!preg_match("/[a-zA-Z0-9-]{1,20}/",$address) ||$address == "")  {
-            $err=true;
-        }
-        if (!preg_match("/[a-zA-Z0-9]{1,20}/",$mail) ||$mail == "")   {
-            $err = true;
-        }
-        if (!preg_match("/[a-zA-Z]/",$firstname) ||$firstname == "")  {
-            $err=true;
-        }
-        if (!preg_match("/[a-zA-Z]/",$lastname) ||$lastname == "")   {
-            $err = true;
-        }
-
-        if($err) {
-            $result = [
-                "success" => false,
-            ];
-        }
-        else {
-            $user = new User();
-            $user
-            ->setFirstname($firstname)
-            ->setLastname($lastname)
-            ->setAddress($address)
-            ->setCity($city)
-            ->setZipcode($zipcode)
-            ->setMail($mail)
-            ->setPhone($phone)
-            ->setCountry($country)
-            ->setPassword($password)
-            ->setLogin($login)
-            ->setGender($gender)
-            ;
-
-            $entityManager->persist($user);
-
-            $entityManager->flush();
+        $user = $userRepo->findOneBy(array('login' => $login, 'password' => $password)) ?? $userRepo->findOneBy(array('mail' => $login, 'password' => $password));
+        if ($user) {
+            $response = $this->createJwt($response, $user);                
             $data = [
                 'idUser' => $user->getIdUser(),
                 'firstname' => $user->getFirstname(),
@@ -124,14 +37,104 @@ class UserController {
                 'country' => $user->getCountry(),
                 'phone' => $user->getPhone(),
             ];
-            $result = [
+            $results = [
                 "success" => true,
                 "data" => $data,
             ];
-            $response->getBody()->write(json_encode($result));
-            $response->withHeader("Content-Type", "application/json");
-            // ->withHeader('Access-Control-Expose-Headers', '*');
+        } else {     
+            $results = [
+                "success" => false,
+                "data" => "Login not possible",
+            ];     
         }
+        $response->getBody()->write(json_encode($results));
+        $response->withHeader("Content-Type", "application/json");
+        return $response;
+    }
+
+    public function register(Request $request, Response $response, array $args) {
+        require_once  __DIR__ . './../../bootstrap.php';
+        $userRepo = $entityManager->getRepository('User');
+        $err = false;
+        $body = $request->getParsedBody();
+        foreach($body as $key => $value){
+            ${$key} = $value ?? "";
+        }
+        $user = $userRepo->findOneBy(array('login' => $login));
+        if($user) {
+            $err = true;
+            $results = [
+                "success" => false,
+                "data" => "User already exists",
+            ];
+        }
+        else {
+            if (!preg_match("/[a-zA-Z0-9]{1,20}/",$password ||$password == ""))  {
+                $err=true;
+            }
+            if (!preg_match("/[a-zA-Z0-9]{1,20}/",$login) ||$login == "")   {
+                $err = true;
+            }
+            if (!preg_match("/[a-zA-Z0-9-]{1,20}/",$address) ||$address == "")  {
+                $err=true;
+            }
+            if (!preg_match("/[a-zA-Z0-9]{1,20}/",$mail) ||$mail == "")   {
+                $err = true;
+            }
+            if (!preg_match("/[a-zA-Z]/",$firstname) ||$firstname == "")  {
+                $err=true;
+            }
+            if (!preg_match("/[a-zA-Z]/",$lastname) ||$lastname == "")   {
+                $err = true;
+            }
+            if($err) {
+                $results = [
+                    "success" => false,
+                    "data" => "There was an error",
+                ];
+            }
+            else {
+                $user = new User();
+                $user
+                ->setFirstname($firstname)
+                ->setLastname($lastname)
+                ->setAddress($address)
+                ->setCity($city)
+                ->setZipcode($zipcode)
+                ->setMail($mail)
+                ->setPhone($phone)
+                ->setCountry($country)
+                ->setPassword($password)
+                ->setLogin($login)
+                ->setGender($gender)
+                ;
+    
+                $entityManager->persist($user);
+    
+                $entityManager->flush();
+                $data = [
+                    'idUser' => $user->getIdUser(),
+                    'firstname' => $user->getFirstname(),
+                    'lastname' => $user->getLastname(),
+                    'login' => $user->getLogin(),
+                    'password' => $user->getPassword(),
+                    'address' => $user->getAddress(),
+                    'zipcode' => $user->getZipcode(),
+                    'city' => $user->getCity(),
+                    'gender' => $user->getGender(),
+                    'mail' => $user->getMail(),
+                    'country' => $user->getCountry(),
+                    'phone' => $user->getPhone(),
+                ];
+                $results = [
+                    "success" => true,
+                    "data" => $data,
+                ];
+            }
+
+        }
+        $response->getBody()->write(json_encode($results));
+        $response->withHeader("Content-Type", "application/json");
         return $response;
     }
 
@@ -164,8 +167,9 @@ class UserController {
         }
 
         if($err) {
-            $result = [
+            $results = [
                 "success" => false,
+                "data" => "We couldn't update your account."
             ];
         }
         else {
@@ -183,16 +187,15 @@ class UserController {
             ->setLogin($login)
             ->setGender($gender)
             ;
-            $result = [
+            $results = [
                 "success" => true,
                 "data" => $body,
             ];
             $entityManager->persist($user);
             $entityManager->flush();
-            $response->getBody()->write(json_encode($result));
-            $response->withHeader("Content-Type", "application/json");
-            // ->withHeader('Access-Control-Expose-Headers', '*');
         }
+        $response->getBody()->write(json_encode($results));
+        $response->withHeader("Content-Type", "application/json");
         return $response;
     }
 
@@ -219,16 +222,17 @@ class UserController {
                 'phone' => $user->getPhone(),
             ];
             $response = $this->createJwT($response, $user);
-            $response->getBody()->write(json_encode([
+            $results = [
                 'success' => true,
                 'data' => $data
-            ]));
+            ];
         }
         else {
-            $response->getBody()->write(json_encode([
+            $results = [
                 'success' => false,
-            ]));
+            ];
         }
+        $response->getBody()->write(json_encode($results));
         $response->withHeader("Content-Type", "application/json");
         return $response;
     }
@@ -241,10 +245,12 @@ class UserController {
         if($user) {
             $result = [
                 'success' => true,
+                "data" => "Successfully logged off.",
             ];
         } else {
             $result = [
                 'success' => false,
+                "data" => "We couldn't log you off.",
             ];
         }
         $response->getBody()->write(json_encode($result));
@@ -262,10 +268,12 @@ class UserController {
             $entityManager->flush();
             $result = [
                 'success' => true,
+                'data' => "Account successfully deleted."
             ];
         } else {
             $result = [
                 'success' => false,
+                'data' => "There was an error."
             ];
         }
         $response->getBody()->write(json_encode($result));

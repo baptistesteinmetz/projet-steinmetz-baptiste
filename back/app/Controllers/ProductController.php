@@ -6,9 +6,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Firebase\JWT\JWT;
 use Product;
 
-// entitymanager doesn't seem to be working with require here ....??
-
-
 class ProductController {
 
     public function getAll(Request $request, Response $response, $args) {
@@ -86,6 +83,7 @@ class ProductController {
         if($price == 0){
             $response->getBody()->write(json_encode([
                 "success" => false,
+                'data' => "Order could not be processed",
             ]));
         }
         else {

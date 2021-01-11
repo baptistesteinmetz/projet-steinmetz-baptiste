@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
-  api: 'https://tp06steinmetz.herokuapp.com',
+  production: true,
+  api: 'https://back-projet-steinmetz-baptiste.herokuapp.com',
 };

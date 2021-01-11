@@ -5,7 +5,7 @@ import { HttpClientModule, HttpClient, HttpHeaders, HttpErrorResponse } from '@a
 import { Injectable } from '@angular/core';
 
 import { User } from '../shared/models/User';
-import { Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
 import { catchError, tap, map, filter} from 'rxjs/operators';
 
 @Injectable(
@@ -84,4 +84,5 @@ export class UserService extends ApiService {
       map((response) => response)
     );
   }
+
 }
