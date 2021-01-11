@@ -57,13 +57,8 @@ export class ProductListComponent implements OnInit {
     else {
       this.products = this.productService.getProducts();
     }
-    // setTimeout(() => {
-    //   // this.loaded = true;
-    // }, 3000);
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-    }
+  }
 }
